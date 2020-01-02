@@ -6,6 +6,7 @@ Backend of website for book database of LGBT literature in Czech language.
 
 - [Common](#common)
 - [Books](#books)
+    - [Total Books](#total-books)
     - [Show List Of Books](#show-list-of-books)
     - [Book Details](#book-details)
 
@@ -27,12 +28,33 @@ __Content example__:
 
 ### Books
 
+#### Total Books
+
+Returns total number of books in database.
+
+__URL__: `/api/books/total`
+
+__Method__: `GET`
+
+##### Success Responses
+
+__Condition__: If total number of books can successfully returned
+
+__Code__: `200 SUCCESS`
+
+__Content example__:
+
+```json
+{
+  "total": 214
+}
+```
+
 #### Show List Of Books
 
 Returns list of books by specified parameters. If no parameters specified, returns list of all books ordered by title. 
 
-__URL__: `/api/books?orderBy={orderBy}&from={from}&to={to}
-`
+__URL__: `/api/books?orderBy={orderBy}&order={order}&from={from}&to={to}`
 
 __Method__: `GET`
 
@@ -40,7 +62,8 @@ __URL parameters__
 
 | URL Parameter | Required | Description                       | Possible Values                                              | Default              |
 |---------------|----------|-----------------------------------|--------------------------------------------------------------|----------------------|
-| `orderBy`     | no       | Key to order the list of books by | `AUTHOR`<br>`TITLE`<br>`DATE_OF_ADDITION`<br>`DATE_OF_ISSUE` | `TITLE`                |
+| `orderBy`     | no       | Key to order the list of books by | `AUTHOR`<br>`TITLE`<br>`DATE_OF_ADDITION`<br>`YEAR_OF_ISSUE` | `TITLE`              |
+| `order`       | no       | Specifies order direction         | `ASC`<br>`DESC`                                              | `ASC`                |
 | `from`        | no       | Start index used for pagination   | `<integer>` above `0`                                        | `0`                  |
 | `to`          | no       | End index used for pagination     | `<integer>` above `{from}` param                             | the last index in DB |
 
@@ -61,7 +84,7 @@ __Content example__:
       "firstName": "Oscar",
       "lastName": "Wilde"
     },
-    "dateOfIssue": "1999",
+    "yearOfIssue": 2018,
     "dateOfAddition": "2020-01-01",
     "imageURL": "/images/jhsu87r.jpeg",
     "tags": [
@@ -96,7 +119,7 @@ __Content example__:
 
 Show all details of given book.
 
-__URL__: `/api/book/{id}
+__URL__: `/api/books/{id}
 `
 
 __Method__: `GET`
@@ -123,7 +146,7 @@ __Content example__
     "firstName": "Oscar",
     "lastName": "Wilde"
   },
-  "dateOfIssue": "2018",
+  "yearOfIssue": 2018,
   "dateOfAddition": "2020-01-01",
   "imageURL": "/images/jhsu87r.jpeg",
   "tags": [
@@ -136,7 +159,7 @@ __Content example__
       "name": "Zahraniční"
     }
   ],
-  "description": "Příběh s utopickými prvky se odehrává v 19. století v Londýně.<br/>Jediná rozsáhlejší próza Oscara Wilda předvádí na fantastickém příběhu aristokrata, jemuž kouzelná moc propůjčila věčnou krásu a mládí, rozpor mezi morálkou a estetickým prožitkem - zatímco Dorian Gray zůstává stále dvacetiletý, jeho dokonalá podoba na plátně stárne a ohyzdí se podle toho, kolik dívčích srdcí zlomil a kolik nadějných mladíků přivedl do zkázy.",
+  "description": "Příběh s utopickými prvky se odehrává v 19. století v Londýně.\r\nJediná rozsáhlejší próza Oscara Wilda předvádí na fantastickém příběhu aristokrata, jemuž kouzelná moc propůjčila věčnou krásu a mládí, rozpor mezi morálkou a estetickým prožitkem - zatímco Dorian Gray zůstává stále dvacetiletý, jeho dokonalá podoba na plátně stárne a ohyzdí se podle toho, kolik dívčích srdcí zlomil a kolik nadějných mladíků přivedl do zkázy.",
   "ISBN": "978-80-207-1814-3",
   "numberOfPages": 264,
   "originalLanguage": "English",
