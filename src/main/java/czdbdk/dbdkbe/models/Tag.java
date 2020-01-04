@@ -1,4 +1,4 @@
-package models;
+package czdbdk.dbdkbe.models;
 
 import lombok.Data;
 
@@ -14,17 +14,17 @@ import java.util.List;
  * @author Tereza Holm
  */
 
-@Entity(name = "author")
+@Entity(name = "tag")
 @Data
-public class Author {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "author_id")
-    private int authorId;
+    private Long id;
+    @Column(name = "tag_id")
+    private int tagId;
     private String name;
-    private String surname;
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "tags")
     private List<Book> books;
+
 }
