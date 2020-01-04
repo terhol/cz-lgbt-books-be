@@ -1,5 +1,6 @@
 package czdbdk.dbdkbe.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -25,9 +26,11 @@ import java.util.List;
 public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JsonIgnore
+    @Column(name = "id")
+    private Long bookId;
     @Column(name = "book_id")
-    private int bookId;
+    private int id;
     private String title;
     @Column(name = "year_of_issue")
     private int yearOfIssue;
@@ -35,7 +38,7 @@ public class Book implements Serializable {
     private Date dateOfAddition = new Date(System.currentTimeMillis());
     private String publisher;
     private String description;
-    private String isbn;
+    private String ISBN;
     @Column(name = "number_of_pages")
     private int numberOfPages;
     @Column(name = "original_language")
@@ -48,7 +51,8 @@ public class Book implements Serializable {
     private String linkCbdb;
     @Lob
     @Type(type = "org.hibernate.type.BinaryType")
-    private byte[] image;
+    @Column(name = "image")
+    private byte[] imageURL;
     @ManyToMany
     @JoinTable(
             name = "book_author",

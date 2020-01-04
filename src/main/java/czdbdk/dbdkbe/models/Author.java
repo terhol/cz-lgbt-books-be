@@ -1,6 +1,7 @@
 package czdbdk.dbdkbe.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -21,11 +22,15 @@ import java.util.List;
 public class Author implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JsonIgnore
+    @Column(name = "id")
+    private Long authorId;
     @Column(name = "author_id")
-    private int authorId;
-    private String name;
-    private String surname;
+    private int id;
+    @Column(name = "name")
+    private String firstName;
+    @Column(name = "surname")
+    private String lastName;
 
 
     @ManyToMany(mappedBy = "authors")

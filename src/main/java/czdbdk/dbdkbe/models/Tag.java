@@ -1,6 +1,7 @@
 package czdbdk.dbdkbe.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -21,9 +22,11 @@ import java.util.List;
 public class Tag implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JsonIgnore
+    @Column(name = "id")
+    private Long tagId;
     @Column(name = "tag_id")
-    private int tagId;
+    private int id;
     private String name;
 
     @ManyToMany(mappedBy = "tags")
