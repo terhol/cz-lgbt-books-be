@@ -62,10 +62,10 @@ __URL parameters__
 
 | URL Parameter | Required | Description                       | Possible Values                                              | Default              |
 |---------------|----------|-----------------------------------|--------------------------------------------------------------|----------------------|
-| `orderBy`     | no       | Key to order the list of books by | `AUTHOR`<br>`TITLE`<br>`DATE_OF_ADDITION`<br>`YEAR_OF_ISSUE` | `TITLE`              |
+| `orderBy`     | no       | Key to order the list of books by | `TITLE`<br>`DATE_OF_ADDITION`<br>`YEAR_OF_ISSUE`             | `TITLE`              |
 | `order`       | no       | Specifies order direction         | `ASC`<br>`DESC`                                              | `ASC`                |
-| `from`        | no       | Start index used for pagination   | `<integer>` above `0`                                        | `0`                  |
-| `to`          | no       | End index used for pagination     | `<integer>` above `{from}` param                             | the last index in DB |
+| `page`        | no       | Number of required page           | `<integer>` above `0`                                        | `0`                  |
+| `size`        | no       | Number of books at one page       | `<integer>` above `0`                                        | the last index in DB |
 
 ##### Success Responses
 

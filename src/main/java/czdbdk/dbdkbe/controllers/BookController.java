@@ -37,7 +37,7 @@ public class BookController {
         }
         orderBy = orderByMap.getOrDefault(orderBy, "title");
 
-        Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
+        Pageable pageable = PageRequest.of(page,size, Sort.by(order, orderBy));
 
         return bookRepository.findAll(pageable);
     }
