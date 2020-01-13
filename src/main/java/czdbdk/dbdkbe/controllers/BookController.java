@@ -1,5 +1,7 @@
 package czdbdk.dbdkbe.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import czdbdk.dbdkbe.jview.DataView;
 import czdbdk.dbdkbe.models.Book;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,9 @@ public class BookController {
     private Map<String, String> orderByMap = prepareMap();
 
 
+
     @GetMapping
+    @JsonView(DataView.SummaryView.class)
     public Iterable<Book> getAllBooks(
             @RequestParam(defaultValue = "title") String orderBy,
             @RequestParam(defaultValue = "ASC") Sort.Direction order,

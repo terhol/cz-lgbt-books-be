@@ -2,6 +2,8 @@ package czdbdk.dbdkbe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import czdbdk.dbdkbe.jview.DataView;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
@@ -30,28 +32,42 @@ public class Book implements Serializable {
     @Column(name = "id")
     private Long bookId;
     @Column(name = "book_id")
+    @JsonView(DataView.SummaryView.class)
     private int id;
+    @JsonView(DataView.SummaryView.class)
     private String title;
     @Column(name = "year_of_issue")
+    @JsonView(DataView.SummaryView.class)
     private int yearOfIssue;
     @Column(name = "date_of_addition")
+    @JsonView(DataView.SummaryView.class)
     private Date dateOfAddition = new Date(System.currentTimeMillis());
+    @JsonView(DataView.DetailView.class)
     private String publisher;
+    @JsonView(DataView.DetailView.class)
     private String description;
+    @JsonView(DataView.DetailView.class)
+    @Column(name = "isbn")
     private String ISBN;
     @Column(name = "number_of_pages")
+    @JsonView(DataView.DetailView.class)
     private int numberOfPages;
     @Column(name = "original_language")
+    @JsonView(DataView.DetailView.class)
     private String originalLanguage;
     @Column(name = "link_goodreads")
+    @JsonView(DataView.DetailView.class)
     private String linkGoodreads;
     @Column(name = "link_databaze")
+    @JsonView(DataView.DetailView.class)
     private String linkDatabaze;
     @Column(name = "link_cbdb")
+    @JsonView(DataView.DetailView.class)
     private String linkCbdb;
     @Lob
     @Type(type = "org.hibernate.type.BinaryType")
     @Column(name = "image")
+    @JsonView(DataView.SummaryView.class)
     private byte[] imageURL;
     @ManyToMany
     @JoinTable(
@@ -60,6 +76,7 @@ public class Book implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "author_id")
     )
     @JsonManagedReference
+    @JsonView(DataView.SummaryView.class)
     private List<Author> authors;
     @ManyToMany
     @JoinTable(
@@ -68,5 +85,6 @@ public class Book implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tag_id")
     )
     @JsonManagedReference
+    @JsonView(DataView.SummaryView.class)
     private List<Tag> tags;
 }
