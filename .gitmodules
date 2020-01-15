@@ -1,4 +1,0 @@
-[submodule "dkdb-fe"]
-	path = dkdb-fe
-	url = https://github.com/knuhol/dkdb-fe
-	branch = master
