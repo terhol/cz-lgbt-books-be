@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,9 +31,9 @@ public class BookController {
     private BookRepository bookRepository;
     private Map<String, String> orderByMap = prepareMap();
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     @JsonView(DataView.SummaryView.class)
-    public Iterable<Book> getAllBooks(
+    public List<Book> getAllBooks(
             @RequestParam(defaultValue = "title") String orderBy,
             @RequestParam(defaultValue = "ASC") Sort.Direction order,
             @RequestParam(defaultValue = "0") Integer page,
@@ -45,7 +46,7 @@ public class BookController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(order, orderBy));
 
-        return bookRepository.findAll(pageable);
+        return bookRepository.findAll(pageable).getContent();
     }
 
     @GetMapping(value = "/total", produces = "application/json")
@@ -54,14 +55,14 @@ public class BookController {
         return bookcount;
     }
 
-    @GetMapping("/{bookNumber}")
+    @GetMapping(value = "/{bookNumber}", produces = "application/json")
     @JsonView(DataView.DetailView.class)
-    public Page<Book> showConcreteBook(
+    public Book showConcreteBook(
             @PathVariable(name = "bookNumber") Long bookNumber,
             Pageable pageable
     ) {
         Page<Book> book = bookRepository.findByBookNumber(bookNumber, pageable);
-        return book;
+        return book.getContent().get(0);
     }
 
     private Map<String, String> prepareMap() {

@@ -3,6 +3,7 @@ package czdbdk.dbdkbe.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import czdbdk.dbdkbe.jview.DataView;
 import lombok.Data;
@@ -33,6 +34,7 @@ public class Book implements Serializable {
     @Column(name = "id")
     private Long bookId;
     @Column(name = "book_id")
+    @JsonProperty("id")
     @JsonView(DataView.SummaryView.class)
     private Long bookNumber;
     @JsonView(DataView.SummaryView.class)
