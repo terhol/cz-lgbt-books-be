@@ -29,8 +29,8 @@ public class Tag implements Serializable {
     private int id;
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
+    /*@ManyToMany(mappedBy = "tags")
     @JsonBackReference
-    private List<Book> books;
+    private List<Book> books;*/
 
 }

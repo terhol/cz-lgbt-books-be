@@ -1,5 +1,6 @@
 package czdbdk.dbdkbe.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -26,14 +27,14 @@ import java.util.List;
 @Entity(name = "book")
 @Data
 public class Book implements Serializable {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
+    @Id
     @Column(name = "id")
     private Long bookId;
     @Column(name = "book_id")
     @JsonView(DataView.SummaryView.class)
-    private int id;
+    private Long bookNumber;
     @JsonView(DataView.SummaryView.class)
     private String title;
     @Column(name = "year_of_issue")
@@ -47,8 +48,7 @@ public class Book implements Serializable {
     @JsonView(DataView.DetailView.class)
     private String description;
     @JsonView(DataView.DetailView.class)
-    @Column(name = "isbn")
-    private String ISBN;
+    private String isbn;
     @Column(name = "number_of_pages")
     @JsonView(DataView.DetailView.class)
     private int numberOfPages;
@@ -64,11 +64,11 @@ public class Book implements Serializable {
     @Column(name = "link_cbdb")
     @JsonView(DataView.DetailView.class)
     private String linkCbdb;
-    @Lob
+    /*@Lob
     @Type(type = "org.hibernate.type.BinaryType")
     @Column(name = "image")
     @JsonView(DataView.SummaryView.class)
-    private byte[] imageURL;
+    private byte[] imageURL;*/
     @ManyToMany
     @JoinTable(
             name = "book_author",

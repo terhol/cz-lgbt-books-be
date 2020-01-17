@@ -13,4 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends PagingAndSortingRepository<Book,Long> {
 
     Page<Book> findAll(Pageable pageable);
+
+    Page<Book> findByBookNumber (Long bookNumber, Pageable pageable);
+
 }
