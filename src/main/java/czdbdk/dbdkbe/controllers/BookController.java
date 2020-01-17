@@ -3,6 +3,7 @@ package czdbdk.dbdkbe.controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import czdbdk.dbdkbe.jview.DataView;
 import czdbdk.dbdkbe.models.Book;
+import czdbdk.dbdkbe.models.BookCount;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,9 +48,10 @@ public class BookController {
         return bookRepository.findAll(pageable);
     }
 
-    @GetMapping("/total")
-    public long getNumberOfBooks() {
-        return bookRepository.count();
+    @GetMapping(value = "/total", produces = "application/json")
+    public BookCount getNumberOfBooks() {
+        BookCount bookcount = new BookCount(bookRepository.count());
+        return bookcount;
     }
 
     @GetMapping("/{bookNumber}")
