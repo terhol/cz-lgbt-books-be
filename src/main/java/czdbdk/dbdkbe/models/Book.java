@@ -1,13 +1,11 @@
 package czdbdk.dbdkbe.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import czdbdk.dbdkbe.jview.DataView;
 import lombok.Data;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -33,6 +31,7 @@ public class Book implements Serializable {
     @Id
     @Column(name = "id")
     private Long bookId;
+    @JsonIgnore
     @Column(name = "book_id")
     @JsonProperty("id")
     @JsonView(DataView.SummaryView.class)
@@ -41,10 +40,10 @@ public class Book implements Serializable {
     private String title;
     @Column(name = "year_of_issue")
     @JsonView(DataView.SummaryView.class)
-    private int yearOfIssue;
+    private String yearOfIssue;
     @Column(name = "date_of_addition")
     @JsonView(DataView.SummaryView.class)
-    private Date dateOfAddition = new Date(System.currentTimeMillis());
+    private LocalDate dateOfAddition;
     @JsonView(DataView.DetailView.class)
     private String publisher;
     @JsonView(DataView.DetailView.class)
@@ -58,19 +57,24 @@ public class Book implements Serializable {
     @JsonView(DataView.DetailView.class)
     private String originalLanguage;
     @Column(name = "link_goodreads")
+    @JsonProperty("links.goodreads")
     @JsonView(DataView.DetailView.class)
     private String linkGoodreads;
+    @JsonProperty("links.databazeKnih")
     @Column(name = "link_databaze")
     @JsonView(DataView.DetailView.class)
     private String linkDatabaze;
+    @JsonProperty("links.cbdb")
     @Column(name = "link_cbdb")
     @JsonView(DataView.DetailView.class)
     private String linkCbdb;
-    /*@Lob
-    @Type(type = "org.hibernate.type.BinaryType")
+    @JsonView(DataView.SummaryView.class)
+    private String slug;
+    /*
     @Column(name = "image")
     @JsonView(DataView.SummaryView.class)
-    private byte[] imageURL;*/
+    private String imageURL;
+    */
     @ManyToMany
     @JoinTable(
             name = "book_author",
