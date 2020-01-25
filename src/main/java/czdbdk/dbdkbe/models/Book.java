@@ -8,6 +8,7 @@ import czdbdk.dbdkbe.jview.DataView;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,8 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -68,6 +71,9 @@ public class Book implements Serializable{
     @Column(name = "link_cbdb")
     @JsonView(DataView.DetailView.class)
     private String linkCbdb;
+    @Embedded
+    private Links links;
+
 
     @ManyToMany
     @JoinTable(

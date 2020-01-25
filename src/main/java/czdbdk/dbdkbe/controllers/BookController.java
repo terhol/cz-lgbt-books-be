@@ -1,7 +1,6 @@
 package czdbdk.dbdkbe.controllers;
 
-import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.slugify.Slugify;
 import czdbdk.dbdkbe.exceptions.BookNotFoundException;
@@ -23,10 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
-
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +82,9 @@ public class BookController {
     @PostMapping(value = "/admin/add", consumes = "application/json")
     public String addNewBook(@RequestBody Book book){
         book.setSlug(prepareSlug(book.getTitle(), book.getYearOfIssue()));
+        /*book.setLinkGoodreads(book.getLinks().get("goodreads"));
+        book.setLinkCbdb(book.getLinks().get("cbdb"));
+        book.setLinkDatabaze(book.getLinks().get("databazeKnih"));*/
         bookRepository.save(book);
 
         return book.getSlug();
