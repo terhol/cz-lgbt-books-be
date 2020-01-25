@@ -10,6 +10,7 @@ import lombok.Data;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -57,15 +58,8 @@ public class Book implements Serializable {
     @Column(name = "original_language")
     @JsonView(DataView.DetailView.class)
     private String originalLanguage;
-    @Column(name = "link_goodreads")
-    @JsonView(DataView.DetailView.class)
-    private String linkGoodreads;
-    @Column(name = "link_databaze")
-    @JsonView(DataView.DetailView.class)
-    private String linkDatabaze;
-    @Column(name = "link_cbdb")
-    @JsonView(DataView.DetailView.class)
-    private String linkCbdb;
+    @Embedded
+    private Links links;
     /*@Lob
     @Type(type = "org.hibernate.type.BinaryType")
     @Column(name = "image")
