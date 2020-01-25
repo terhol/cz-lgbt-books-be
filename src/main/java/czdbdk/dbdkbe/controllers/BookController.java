@@ -69,7 +69,7 @@ public class BookController {
         Map<String, String> orderByMap = new HashMap<>();
         orderByMap.put("TITLE", "title");
         orderByMap.put("YEAR_OF_ISSUE", "yearOfIssue");
-        orderByMap.put("DATE_OF_ADDITION", "dateOfAdition");
+        orderByMap.put("DATE_OF_ADDITION", "dateOfAddition");
         return orderByMap;
     }
 }
