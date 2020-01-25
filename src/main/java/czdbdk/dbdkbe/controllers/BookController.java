@@ -1,11 +1,15 @@
 package czdbdk.dbdkbe.controllers;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.github.slugify.Slugify;
 import czdbdk.dbdkbe.exceptions.BookNotFoundException;
 import czdbdk.dbdkbe.jview.DataView;
 import czdbdk.dbdkbe.models.Author;
 import czdbdk.dbdkbe.models.Book;
 import czdbdk.dbdkbe.models.BookCount;
+import czdbdk.dbdkbe.models.GeneralBook;
 import czdbdk.dbdkbe.models.Tag;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +19,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sun.util.calendar.BaseCalendar;
+
+
+
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * @author Tereza Holm
@@ -79,39 +87,17 @@ public class BookController {
     // Method for adding books
 
     @PostMapping(value = "/admin/add", consumes = "application/json")
-    public String addNewBook(
-            @RequestParam String title,
-            @RequestParam String yearOfIssue,
-            @RequestParam String publisher,
-            @RequestParam String description,
-            @RequestParam String isbn,
-            @RequestParam int numberOfPages,
-            @RequestParam String originalLanguage,
-            @RequestParam String linkGoodreads,
-            @RequestParam String linkdatabaze,
-            @RequestParam String linkcbdb,
-            @RequestParam List<Author> authors,
-            @RequestParam List<Tag> tags
-    ){
-        Book book = new Book();
-        book.setTitle(title);
-        book.setYearOfIssue(yearOfIssue);
-        book.setPublisher(publisher);
-        book.setDescription(description);
-        book.setIsbn(isbn);
-        book.setNumberOfPages(numberOfPages);
-        book.setOriginalLanguage(originalLanguage);
-        book.setLinkCbdb(linkcbdb);
-        book.setLinkDatabaze(linkdatabaze);
-        book.setLinkGoodreads(linkGoodreads);
-        book.setDateOfAddition(LocalDate.now());
-        book.setSlug(prepareSlug(title, yearOfIssue));
-        //TODO
-        return "";
+    public String addNewBook(@RequestBody GeneralBook book){
+        Book newBook = JSON.parseObject(JSON.toJSONString(book), Book.class);
+        newBook.setSlug(prepareSlug(book.getTitle(), book.getYearOfIssue()));
+        bookRepository.save(newBook);
+
+        return newBook.getSlug();
     }
 
     private String prepareSlug(String title, String yearOfIssue) {
-        //TODO
-        return "";
+        Slugify slg = new Slugify();
+        String result = slg.slugify(String.format("%s %s", title, yearOfIssue));
+        return result;
     }
 }
