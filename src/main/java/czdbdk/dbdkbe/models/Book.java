@@ -59,21 +59,8 @@ public class Book implements Serializable{
     @Column(name = "original_language")
     @JsonView(DataView.DetailView.class)
     private String originalLanguage;
-    @Column(name = "link_goodreads")
-    @JsonProperty("links.goodreads")
-    @JsonView(DataView.DetailView.class)
-    private String linkGoodreads;
-    @JsonProperty("links.databazeKnih")
-    @Column(name = "link_databaze")
-    @JsonView(DataView.DetailView.class)
-    private String linkDatabaze;
-    @JsonProperty("links.cbdb")
-    @Column(name = "link_cbdb")
-    @JsonView(DataView.DetailView.class)
-    private String linkCbdb;
     @Embedded
     private Links links;
-
 
     @ManyToMany
     @JoinTable(
