@@ -9,8 +9,6 @@ import czdbdk.dbdkbe.jview.DataView;
 import czdbdk.dbdkbe.models.Author;
 import czdbdk.dbdkbe.models.Book;
 import czdbdk.dbdkbe.models.BookCount;
-import czdbdk.dbdkbe.models.GeneralBook;
-import czdbdk.dbdkbe.models.Tag;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -87,12 +85,11 @@ public class BookController {
     // Method for adding books
 
     @PostMapping(value = "/admin/add", consumes = "application/json")
-    public String addNewBook(@RequestBody GeneralBook book){
-        Book newBook = JSON.parseObject(JSON.toJSONString(book), Book.class);
-        newBook.setSlug(prepareSlug(book.getTitle(), book.getYearOfIssue()));
-        bookRepository.save(newBook);
+    public String addNewBook(@RequestBody Book book){
+        book.setSlug(prepareSlug(book.getTitle(), book.getYearOfIssue()));
+        bookRepository.save(book);
 
-        return newBook.getSlug();
+        return book.getSlug();
     }
 
     private String prepareSlug(String title, String yearOfIssue) {
