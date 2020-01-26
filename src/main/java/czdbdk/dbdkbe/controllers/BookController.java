@@ -1,6 +1,5 @@
 package czdbdk.dbdkbe.controllers;
 
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
@@ -73,8 +72,6 @@ public class BookController {
     ) {
         return bookRepository.findBySlug(slug)
                 .orElseThrow(() -> new BookNotFoundException(slug));
-
-
     }
 
     private Map<String, String> prepareMap() {
@@ -88,12 +85,12 @@ public class BookController {
     // Method for adding books
 
     @PostMapping(value = "/admin/add", consumes = "application/json")
-    public String addNewBook(@RequestBody Book book){
+    public String addNewBook(@RequestBody Book book) {
         book.setSlug(prepareSlug(book.getTitle(), book.getYearOfIssue()));
         book.setDateOfAddition(LocalDate.now());
         book.setImageURL(prepareImageURL(book.getLinks().getGoodreads()));
-        for(Author author: book.getAuthors()){
-            if(!authorRepository.existsByFirstNameAndLastName(author.getFirstName(), author.getLastName())){
+        for (Author author : book.getAuthors()) {
+            if (!authorRepository.existsByFirstNameAndLastName(author.getFirstName(), author.getLastName())) {
                 authorRepository.save(author);
             }
         }
@@ -102,16 +99,16 @@ public class BookController {
         return book.getSlug();
     }
 
-    private String prepareImageURL(String goodreads){
+    private String prepareImageURL(String goodreads) {
         Cloudinary cloudinary = new Cloudinary();
         String finalImageUrl = "placeholderString";
-        try{
-        Document document = Jsoup.connect(goodreads).get();
-        String imageUrl = document.getElementById("coverImage").attr("src");
-        Map params = ObjectUtils.asMap("transformation", new Transformation().crop("pad").width(300).height(400));
-        Map uploadResult = cloudinary.uploader().upload(imageUrl, params);
-        finalImageUrl = uploadResult.get("secure_url").toString();}
-        catch(IOException ex){
+        try {
+            Document document = Jsoup.connect(goodreads).get();
+            String imageUrl = document.getElementById("coverImage").attr("src");
+            Map params = ObjectUtils.asMap("transformation", new Transformation().crop("pad").width(300).height(400));
+            Map uploadResult = cloudinary.uploader().upload(imageUrl, params);
+            finalImageUrl = uploadResult.get("secure_url").toString();
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return finalImageUrl;
@@ -122,5 +119,4 @@ public class BookController {
         String result = slg.slugify(String.format("%s %s", title, yearOfIssue));
         return result;
     }
-    
 }

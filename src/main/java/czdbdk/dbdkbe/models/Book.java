@@ -23,8 +23,7 @@ import java.util.List;
  */
 @Entity(name = "book")
 @Data
-public class Book implements Serializable{
-
+public class Book implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     @Id
@@ -53,13 +52,12 @@ public class Book implements Serializable{
     private Links links;
     @JsonView(DataView.DetailView.class)
     private String imageURL;
-
     @ManyToMany
     @JoinTable(
             name = "book_author",
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = {@JoinColumn(name = "name", referencedColumnName = "name"),
-            @JoinColumn(name = "surname", referencedColumnName = "surname")}
+                    @JoinColumn(name = "surname", referencedColumnName = "surname")}
     )
     @JsonView(DataView.SummaryView.class)
     private List<Author> authors;
@@ -71,8 +69,6 @@ public class Book implements Serializable{
     )
     @JsonView(DataView.SummaryView.class)
     private List<Tag> tags;
-
     @JsonView(DataView.SummaryView.class)
     private String slug;
-
 }

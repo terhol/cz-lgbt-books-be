@@ -12,10 +12,8 @@ import java.util.Optional;
  * @author Tereza Holm
  */
 @Repository
-public interface BookRepository extends PagingAndSortingRepository<Book,Long> {
-
+public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
     Page<Book> findAll(Pageable pageable);
 
-    Optional<Book> findBySlug (String slug);
-
+    Optional<Book> findBySlug(String slug);
 }

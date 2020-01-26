@@ -1,8 +1,6 @@
 package czdbdk.dbdkbe.models;
 
 import lombok.Data;
-
-import javax.persistence.IdClass;
 import java.io.Serializable;
 
 /**
