@@ -50,7 +50,7 @@ public class Book implements Serializable {
     private String originalLanguage;
     @Embedded
     private Links links;
-    @JsonView(DataView.DetailView.class)
+    @JsonView(DataView.SummaryView.class)
     private String imageURL;
     @ManyToMany
     @JoinTable(
