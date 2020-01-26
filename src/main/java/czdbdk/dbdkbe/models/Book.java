@@ -1,8 +1,6 @@
 package czdbdk.dbdkbe.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import czdbdk.dbdkbe.jview.DataView;
 import lombok.Data;
@@ -16,10 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -33,13 +29,7 @@ public class Book implements Serializable{
     @JsonIgnore
     @Id
     @Column(name = "id")
-    private Long bookId;
-    @JsonIgnore
-    @Column(name = "book_id")
-    @JsonProperty("id")
-    @JsonView(DataView.SummaryView.class)
-    private Long bookNumber;
-    @JsonView(DataView.SummaryView.class)
+    private Long id;
     private String title;
     @Column(name = "year_of_issue")
     @JsonView(DataView.SummaryView.class)
@@ -61,30 +51,28 @@ public class Book implements Serializable{
     private String originalLanguage;
     @Embedded
     private Links links;
+    @JsonView(DataView.DetailView.class)
+    private String imageURL;
 
     @ManyToMany
     @JoinTable(
             name = "book_author",
-            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "author_id")
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = {@JoinColumn(name = "name", referencedColumnName = "name"),
+            @JoinColumn(name = "surname", referencedColumnName = "surname")}
     )
     @JsonView(DataView.SummaryView.class)
     private List<Author> authors;
     @ManyToMany
     @JoinTable(
             name = "book_tag",
-            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tag_id")
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_slug", referencedColumnName = "slug")
     )
     @JsonView(DataView.SummaryView.class)
     private List<Tag> tags;
 
     @JsonView(DataView.SummaryView.class)
     private String slug;
-    /*
-    @Column(name = "image")
-    @JsonView(DataView.SummaryView.class)
-    private String imageURL;
-    */
 
 }
