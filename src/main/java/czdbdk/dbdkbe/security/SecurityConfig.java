@@ -5,6 +5,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 
 /**
  * @author Tereza Holm
@@ -18,12 +19,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic()
-                .and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/books/admin/add").hasRole("ADMIN")
                 .and()
-                .csrf().disable()
-                .formLogin().disable();
+                .requestCache()
+                .requestCache(new NullRequestCache())
+                .and()
+                .httpBasic();
+
     }
 }
