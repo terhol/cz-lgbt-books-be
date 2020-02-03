@@ -77,6 +77,12 @@ public class BookController {
         return new Info(numberOfBooks, lastChange);
     }
 
+    @GetMapping(value = "/random", produces = "application/json")
+    @JsonView(DataView.DetailView.class)
+    public Book getRandomBook(){
+        return bookRepository.findRandomBook();
+    }
+
     @GetMapping(value = "/{slug}", produces = "application/json")
     @JsonView(DataView.DetailView.class)
     public Book showConcreteBook(

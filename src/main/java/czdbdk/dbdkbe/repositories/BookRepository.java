@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,4 +22,7 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
 
     @Query(value = "select max(b.date_of_addition) from Book b", nativeQuery = true)
     LocalDate findMaxDate();
+
+    @Query(value = "select * from Book ORDER BY RANDOM() limit 1", nativeQuery = true)
+    Book findRandomBook();
 }
