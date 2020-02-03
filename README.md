@@ -13,7 +13,7 @@ GET /api/books/total
 ```
 GET /api/books/info
 ```
-- __NOT IMPLEMENTED__
+- __FULLY IMPLEMENTED__
 - waiting for change from `/api/books/total`
 
 ```
