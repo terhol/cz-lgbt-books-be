@@ -1,6 +1,6 @@
 package czdbdk.dbdkbe.repositories;
 
-import czdbdk.dbdkbe.models.Author;
+import czdbdk.dbdkbe.models.databaseModels.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

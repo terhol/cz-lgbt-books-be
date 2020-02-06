@@ -1,8 +1,9 @@
-package czdbdk.dbdkbe.models;
+package czdbdk.dbdkbe.models.databaseModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import czdbdk.dbdkbe.jview.DataView;
+import czdbdk.dbdkbe.models.Links;
 import lombok.Data;
 
 import javax.persistence.Column;

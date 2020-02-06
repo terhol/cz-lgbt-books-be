@@ -1,6 +1,7 @@
-package czdbdk.dbdkbe.models;
+package czdbdk.dbdkbe.models.databaseModels;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import czdbdk.dbdkbe.models.AuthorCredentials;
 import lombok.Data;
 
 import javax.persistence.Column;

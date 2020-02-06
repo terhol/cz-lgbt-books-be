@@ -7,13 +7,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.github.slugify.Slugify;
 import czdbdk.dbdkbe.exceptions.BookNotFoundException;
 import czdbdk.dbdkbe.jview.DataView;
-import czdbdk.dbdkbe.models.Author;
-import czdbdk.dbdkbe.models.Book;
-import czdbdk.dbdkbe.models.BookCount;
+import czdbdk.dbdkbe.models.databaseModels.Author;
+import czdbdk.dbdkbe.models.databaseModels.Book;
 import czdbdk.dbdkbe.models.Info;
 import czdbdk.dbdkbe.repositories.AuthorRepository;
 import czdbdk.dbdkbe.repositories.BookRepository;
-import org.apache.http.annotation.Obsolete;
+import czdbdk.dbdkbe.utils.SlugMaker;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +96,7 @@ public class BookController {
     @PreAuthorize(value = "ROLES_ADMIN")
     @PostMapping(value = "/admin/add", consumes = "application/json")
     public String addNewBook(@RequestBody Book book) {
-        book.setSlug(prepareSlug(book.getTitle(), book.getYearOfIssue()));
+        book.setSlug(SlugMaker.prepareSlug(book.getTitle(), book.getYearOfIssue()));
         book.setDateOfAddition(LocalDate.now());
         book.setImageURL(prepareImageURL(book.getLinks().getGoodreads()));
         for (Author author : book.getAuthors()) {
@@ -123,11 +122,5 @@ public class BookController {
             System.out.println(ex.getMessage());
         }
         return finalImageUrl;
-    }
-
-    private String prepareSlug(String title, String yearOfIssue) {
-        Slugify slg = new Slugify();
-        String result = slg.slugify(String.format("%s %s", title, yearOfIssue));
-        return result;
     }
 }
