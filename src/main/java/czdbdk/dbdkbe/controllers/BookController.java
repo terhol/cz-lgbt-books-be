@@ -29,8 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -62,12 +61,6 @@ public class BookController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(order, orderBy).and(Sort.by(order, "id")));
 
         return bookRepository.findAll(pageable).getContent();
-    }
-    @Obsolete
-    @GetMapping(value = "/total", produces = "application/json")
-    public BookCount getNumberOfBooks() {
-        BookCount bookcount = new BookCount(bookRepository.count());
-        return bookcount;
     }
 
     @GetMapping(value = "/info", produces = "application/json")

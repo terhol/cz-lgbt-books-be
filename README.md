@@ -4,17 +4,12 @@ Backend of website for book database of LGBT literature in Czech language.
 
 ## Endpoints DEV status
 
-```
-GET /api/books/total
-```
-- __OBSOLETE__
-- waiting for replacement by `/api/books/info`
 
 ```
 GET /api/books/info
 ```
 - __FULLY IMPLEMENTED__
-- waiting for change from `/api/books/total`
+
 
 ```
 GET /api/books/filterParams
