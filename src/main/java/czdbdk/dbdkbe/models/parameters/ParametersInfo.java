@@ -1,14 +1,15 @@
 package czdbdk.dbdkbe.models.parameters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import czdbdk.dbdkbe.models.databaseModels.Book;
 import czdbdk.dbdkbe.models.databaseModels.Tag;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import czdbdk.dbdkbe.repositories.BookTagRepository;
 import czdbdk.dbdkbe.repositories.TagRepository;
+import czdbdk.dbdkbe.utils.SlugMaker;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,6 @@ import java.util.List;
 @Data
 @Component
 public class ParametersInfo {
-    //private List<OriginalLanguageInfo> originalLanguage = prepareOriginalLanguageList();
     //private List<BookSizeInfo> bookSize = prepareBookSizeList();
     @Autowired
     @JsonIgnore
@@ -30,15 +30,19 @@ public class ParametersInfo {
     @Autowired
     @JsonIgnore
     private BookTagRepository bookTagRepository;
-    private List<TagsInfo> tags;
+    //private List<TagsInfo> tags;
+    //private List<OriginalLanguageInfo> originalLanguage;
 
-    private List<OriginalLanguageInfo> prepareOriginalLanguageList() {
+    public void prepareOriginalLanguageList() {
         List<OriginalLanguageInfo> finalListOfLanguages = new ArrayList<>();
         List<String> allOriginalLanguages = bookRepository.findDistinctByOriginalLanguage();
         for (String language : allOriginalLanguages) {
-            finalListOfLanguages.add(new OriginalLanguageInfo(language));
+            OriginalLanguageInfo currentLanguage = new OriginalLanguageInfo(language);
+            currentLanguage.setSlug(SlugMaker.prepareSlug(language));
+            currentLanguage.setBooksMatchesValue(bookRepository.countByOriginalLanguage(language));
+            finalListOfLanguages.add(currentLanguage);
         }
-        return finalListOfLanguages;
+        //this.originalLanguage = finalListOfLanguages;
     }
 
     private List<BookSizeInfo> prepareBookSizeList() {
@@ -64,6 +68,6 @@ public class ParametersInfo {
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
         }
-        this.tags = finalTags;
+        //this.tags = finalTags;
     }
 }

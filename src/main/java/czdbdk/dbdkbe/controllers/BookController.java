@@ -90,6 +90,7 @@ public class BookController {
     @GetMapping(value = "/filterParams", produces = "application/json")
     public ParametersInfo getParametersInformation(){
         parametersInfo.prepareTagsList();
+        parametersInfo.prepareOriginalLanguageList();
         return parametersInfo;
     }
 
