@@ -26,7 +26,8 @@ GET /api/books
 ```
 - __PARTIALLY IMPLEMENTED__
 - params `order`, `orderBy`, `size` and `page` supported
-- params `tags`, `originalLanguages` and `bookSizes` waiting for implementation
+- params `tags`, `originalLanguage` and `bookSize` waiting for implementation
+- waiting for structure change, will not return just array of books anymore but object `{ total: <number>, books: Book[] }` 
 
 ```
 GET /api/books/:slug
@@ -36,7 +37,7 @@ GET /api/books/:slug
 ```
 GET /api/books/random
 ```
-- __NOT IMPLEMENTED__
+- __FULLY IMPLEMENTED__
 
 ## REST API Documentation
 
@@ -161,21 +162,21 @@ __Content example__:
 
 Returns list of books by specified parameters. If no parameters specified, returns list of all books ordered by title. 
 
-__URL__: `/api/books?orderBy={orderBy}&order={order}&from={from}&to={to}&tags={tags[]}&originalLanguages={originalLanguage[]}&bookSizes={bookSize[]}`
+__URL__: `/api/books?orderBy={orderBy}&order={order}&from={from}&to={to}&tags={tags[]}&originalLanguage={originalLanguage}&bookSize={bookSize}`
 
 __Method__: `GET`
 
 __URL parameters__
 
-| URL Parameter       | Required | Description                             | Possible Values                                              | Default              |
-|---------------------|----------|-----------------------------------------|--------------------------------------------------------------|----------------------|
-| `orderBy`           | no       | Key to order the list of books by       | `TITLE`<br>`DATE_OF_ADDITION`<br>`YEAR_OF_ISSUE`             | `DATE_OF_ADDITION `  |
-| `order`             | no       | Specifies order direction               | `ASC`<br>`DESC`                                              | `ASC`                |
-| `page`              | no       | Number of required page                 | `<integer>` above `0`                                        | `0`                  |
-| `size`              | no       | Number of books at one page             | `<integer>` above `0`                                        | the last index in DB |
-| `tags`              | no       | Filter based on tags (AND)              | `<string[]>`, example `tags=gay,zahranicni`                  | N/A                  |
-| `originalLanguages` | no       | Filter based on original languages (OR) | `<string[]>`, example `originalLanguages=anglictina,cestina` | N/A                  |
-| `bookSizes`         | no       | Filter based on book sizes (OR)         | `<string[]>`, example `bookSizes=kratka,stredni`             | N/A                  |
+| URL Parameter      | Required | Description                             | Possible Values                                    | Default              |
+|--------------------|----------|-----------------------------------------|----------------------------------------------------|----------------------|
+| `orderBy`          | no       | Key to order the list of books by       | `TITLE`<br>`DATE_OF_ADDITION`<br>`YEAR_OF_ISSUE`   | `DATE_OF_ADDITION `  |
+| `order`            | no       | Specifies order direction               | `ASC`<br>`DESC`                                    | `ASC`                |
+| `page`             | no       | Number of required page                 | `<integer>` above `0`                              | `0`                  |
+| `size`             | no       | Number of books at one page             | `<integer>` above `0`                              | the last index in DB |
+| `tags`             | no       | Filter based on tags (AND)              | `<string[]>`, example `tags=gay,zahranicni`        | N/A                  |
+| `originalLanguage` | no       | Filter based on original languages (OR) | `<string>`, example `originalLanguages=anglictina` | N/A                  |
+| `bookSize`         | no       | Filter based on book sizes (OR)         | `<string>`, example `bookSizes=kratka`             | N/A                  |
 
 ##### Success Responses
 
@@ -186,31 +187,34 @@ __Code__: `200 SUCCESS`
 __Content example__:
 
 ```json
-[
-  {
-    "slug": "obraz-doriana-graye-2018",
-    "title": "Obraz Doriana Graye",
-    "author": {
-      "firstName": "Oscar",
-      "lastName": "Wilde"
-    },
-    "yearOfIssue": 2018,
-    "dateOfAddition": "2020-01-01",
-    "imageURL": "/images/jhsu87r.jpeg",
-    "tags": [
-      {
-        "slug": "gay",
-        "name": "Gay",
-        "color": "red"
-      },
-      {
-        "slug": "zahranicni",
-        "name": "Zahraniční",
-        "color" "purple"
+{
+  "total": 211,
+  "books": [
+    {
+      "title": "Obraz Doriana Graye",
+      "yearOfIssue": 2018,
+      "dateOfAddition": "2020-01-01",
+      "imageURL": "/images/jhsu87r.jpeg",
+      "tags": [
+        {
+          "name": "Gay",
+          "slug": "gay",
+          "color": "red"
+        },
+        {
+          "name": "Zahraniční",
+          "slug": "zahranicni",
+          "color": "purple"
+        }
+      ],
+      "slug": "obraz-doriana-graye-2018",
+      "author": {
+        "firstName": "Oscar",
+        "lastName": "Wilde"
       }
-    ]
-  }
-]
+    }
+  ]
+}
 ```
 
 ##### Error Responses
@@ -223,7 +227,7 @@ __Content example__:
 
 ```json
 {
-  "detail": "No data found for given indexes"
+  "detail": "No data found for given parameters"
 }
 ```
 
@@ -290,7 +294,7 @@ __Content example__
 
 ##### Error Responses
 
-__Condition__: If there is no book with given ID
+__Condition__: If there is no book with given slug
 
 __Code__: `404 NOT FOUND`
 
@@ -298,7 +302,7 @@ __Content example__:
 
 ```json
 {
-  "detail": "No book matches the given ID"
+  "detail": "No book matches the given slug"
 }
 ```
 
