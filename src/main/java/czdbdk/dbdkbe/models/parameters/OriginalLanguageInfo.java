@@ -10,17 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Data
 public class OriginalLanguageInfo {
-    private Long booksMatchesValue;
+    //private Long booksMatchesValue;
     private String name;
-    private String slug;
+    //private String slug;
 
     @Autowired
     BookRepository bookRepository;
 
     public OriginalLanguageInfo(String name){
         this.name = name;
-        this.slug = SlugMaker.prepareSlug(name);
-        this.booksMatchesValue = bookRepository.countByOriginalLanguage(name);
+        //this.slug = SlugMaker.prepareSlug(name);
+        //this.booksMatchesValue = bookRepository.countByOriginalLanguage(name);
     }
 
 

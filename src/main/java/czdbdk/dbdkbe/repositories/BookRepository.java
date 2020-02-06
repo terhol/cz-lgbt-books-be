@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,8 +26,12 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
     @Query(value = "select * from Book ORDER BY RANDOM() limit 1", nativeQuery = true)
     Book findRandomBook();
 
+    @Query(value = "select count(b) from Book b where b.originalLanguage = ?1", nativeQuery = true)
     Long countByOriginalLanguage(String originalLanguage);
 
-    @Query(value = "select count(b) from Book b where (b.numberOfPages > ?1) and (b.number_of_pages < ?2)")
-    Long countByNumberOfPages(Long min, Long Max);
+    @Query(value = "select count(b) from Book b where (b.numberOfPages > ?1) and (b.number_of_pages < ?2)", nativeQuery = true)
+    Long countByNumberOfPages(int min, int Max);
+
+    @Query(value = "select DISTINCT(b.original_language) from Book b  ", nativeQuery = true)
+    List<String> findDistinctByOriginalLanguage();
 }

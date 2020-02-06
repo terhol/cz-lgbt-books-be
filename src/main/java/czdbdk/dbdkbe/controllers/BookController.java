@@ -10,6 +10,7 @@ import czdbdk.dbdkbe.jview.DataView;
 import czdbdk.dbdkbe.models.databaseModels.Author;
 import czdbdk.dbdkbe.models.databaseModels.Book;
 import czdbdk.dbdkbe.models.Info;
+import czdbdk.dbdkbe.models.parameters.ParametersInfo;
 import czdbdk.dbdkbe.repositories.AuthorRepository;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import czdbdk.dbdkbe.utils.SlugMaker;
@@ -45,6 +46,8 @@ public class BookController {
     private BookRepository bookRepository;
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private ParametersInfo parametersInfo;
     private Map<String, String> orderByMap = prepareMap();
 
     @GetMapping(produces = "application/json")
@@ -82,6 +85,12 @@ public class BookController {
     ) {
         return bookRepository.findBySlug(slug)
                 .orElseThrow(() -> new BookNotFoundException(slug));
+    }
+
+    @GetMapping(value = "/filterParams", produces = "application/json")
+    public ParametersInfo getParametersInformation(){
+        parametersInfo.prepareTagsList();
+        return parametersInfo;
     }
 
     private Map<String, String> prepareMap() {
