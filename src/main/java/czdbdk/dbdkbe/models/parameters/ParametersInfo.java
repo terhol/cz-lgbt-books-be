@@ -1,8 +1,9 @@
 package czdbdk.dbdkbe.models.parameters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import czdbdk.dbdkbe.models.databaseModels.Book;
+import czdbdk.dbdkbe.models.databaseModels.BookLength;
 import czdbdk.dbdkbe.models.databaseModels.Tag;
+import czdbdk.dbdkbe.repositories.BookLengthRepository;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import czdbdk.dbdkbe.repositories.BookTagRepository;
 import czdbdk.dbdkbe.repositories.TagRepository;
@@ -20,7 +21,7 @@ import java.util.List;
 @Data
 @Component
 public class ParametersInfo {
-    //private List<BookSizeInfo> bookSize = prepareBookSizeList();
+
     @Autowired
     @JsonIgnore
     private BookRepository bookRepository;
@@ -30,8 +31,12 @@ public class ParametersInfo {
     @Autowired
     @JsonIgnore
     private BookTagRepository bookTagRepository;
-    //private List<TagsInfo> tags;
-    //private List<OriginalLanguageInfo> originalLanguage;
+    @Autowired
+    @JsonIgnore
+    private BookLengthRepository bookLengthRepository;
+    private List<TagsInfo> tags;
+    private List<OriginalLanguageInfo> originalLanguage;
+    private List<BookLength> bookSize;
 
     public void prepareOriginalLanguageList() {
         List<OriginalLanguageInfo> finalListOfLanguages = new ArrayList<>();
@@ -42,17 +47,15 @@ public class ParametersInfo {
             currentLanguage.setBooksMatchesValue(bookRepository.countByOriginalLanguage(language));
             finalListOfLanguages.add(currentLanguage);
         }
-        //this.originalLanguage = finalListOfLanguages;
+        this.originalLanguage = finalListOfLanguages;
     }
 
-    private List<BookSizeInfo> prepareBookSizeList() {
-        List<BookSizeInfo> finalBookSize = new ArrayList<>();
-        //TODO non-hardcoded values
-        finalBookSize.add(new BookSizeInfo("krátká", 0, 200));
-        finalBookSize.add(new BookSizeInfo("střední", 201, 400));
-        //TODO find out maximal value?
-        finalBookSize.add(new BookSizeInfo("dlouhá", 401, 10000));
-        return finalBookSize;
+    public void prepareBookSizeList() {
+        List<BookLength> finalBookSize = bookLengthRepository.findAllLengths();
+        for(BookLength bookLength:finalBookSize){
+            bookLength.setBooksMatchesValue(bookRepository.countByNumberOfPages(bookLength.getMinPages(), bookLength.getMaxPages()));
+        }
+        this.bookSize = finalBookSize;
     }
 
     public void prepareTagsList() {
@@ -68,6 +71,6 @@ public class ParametersInfo {
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
         }
-        //this.tags = finalTags;
+        this.tags = finalTags;
     }
 }

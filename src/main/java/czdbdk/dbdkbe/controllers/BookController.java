@@ -1,10 +1,6 @@
 package czdbdk.dbdkbe.controllers;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.Transformation;
-import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.github.slugify.Slugify;
 import czdbdk.dbdkbe.exceptions.BookNotFoundException;
 import czdbdk.dbdkbe.jview.DataView;
 import czdbdk.dbdkbe.models.databaseModels.Author;
@@ -13,9 +9,8 @@ import czdbdk.dbdkbe.models.Info;
 import czdbdk.dbdkbe.models.parameters.ParametersInfo;
 import czdbdk.dbdkbe.repositories.AuthorRepository;
 import czdbdk.dbdkbe.repositories.BookRepository;
+import czdbdk.dbdkbe.utils.ImageMaker;
 import czdbdk.dbdkbe.utils.SlugMaker;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +84,7 @@ public class BookController {
     public ParametersInfo getParametersInformation(){
         parametersInfo.prepareTagsList();
         parametersInfo.prepareOriginalLanguageList();
+        parametersInfo.prepareBookSizeList();
         return parametersInfo;
     }
 
@@ -108,7 +102,7 @@ public class BookController {
     public String addNewBook(@RequestBody Book book) {
         book.setSlug(SlugMaker.prepareSlug(book.getTitle(), book.getYearOfIssue()));
         book.setDateOfAddition(LocalDate.now());
-        book.setImageURL(prepareImageURL(book.getLinks().getGoodreads()));
+        book.setImageURL(ImageMaker.prepareImageURL(book.getLinks().getGoodreads()));
         for (Author author : book.getAuthors()) {
             if (!authorRepository.existsByFirstNameAndLastName(author.getFirstName(), author.getLastName())) {
                 authorRepository.save(author);
@@ -117,20 +111,5 @@ public class BookController {
         bookRepository.save(book);
 
         return book.getSlug();
-    }
-
-    private String prepareImageURL(String goodreads) {
-        Cloudinary cloudinary = new Cloudinary();
-        String finalImageUrl = "placeholderString";
-        try {
-            Document document = Jsoup.connect(goodreads).get();
-            String imageUrl = document.getElementById("coverImage").attr("src");
-            Map params = ObjectUtils.asMap("transformation", new Transformation().crop("pad").width(300).height(400));
-            Map uploadResult = cloudinary.uploader().upload(imageUrl, params);
-            finalImageUrl = uploadResult.get("secure_url").toString();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return finalImageUrl;
     }
 }
