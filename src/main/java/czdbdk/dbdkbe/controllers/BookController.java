@@ -3,6 +3,7 @@ package czdbdk.dbdkbe.controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import czdbdk.dbdkbe.exceptions.BookNotFoundException;
 import czdbdk.dbdkbe.jview.DataView;
+import czdbdk.dbdkbe.models.BooksWithTotal;
 import czdbdk.dbdkbe.models.Info;
 import czdbdk.dbdkbe.models.databaseModels.Author;
 import czdbdk.dbdkbe.models.databaseModels.Book;
@@ -16,6 +17,7 @@ import czdbdk.dbdkbe.specifications.BookSpecifications;
 import czdbdk.dbdkbe.utils.ImageMaker;
 import czdbdk.dbdkbe.utils.SlugMaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -65,7 +67,7 @@ public class BookController {
 
     @GetMapping(produces = "application/json")
     @JsonView(DataView.SummaryView.class)
-    public List<Book> getAllBooks(
+    public BooksWithTotal getAllBooks(
             @RequestParam(defaultValue = "dateOfAddition") String orderBy,
             @RequestParam(defaultValue = "DESC") Sort.Direction order,
             @RequestParam(defaultValue = "0") Integer page,
@@ -80,11 +82,13 @@ public class BookController {
         List<Tag> tagEntities = new ArrayList<>();
         if (tags != null) for (String tag : tags) tagEntities.add(tagRepository.findBySlug(tag));
 
-        return bookRepository.findAll(
+        Page<Book> booksPage = bookRepository.findAll(
                 where(Objects.requireNonNull(BookSpecifications.hasLanguageSlug(originalLanguage)
                         .and(BookSpecifications.hasBookLength(bookLengthRepository.findBySlug(bookSize))))
                         .and(BookSpecifications.hasTags(tagEntities))),
-                pageable).getContent();
+                pageable);
+
+        return new BooksWithTotal(booksPage);
     }
 
     @GetMapping(value = "/info", produces = "application/json")
