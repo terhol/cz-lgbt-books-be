@@ -9,14 +9,11 @@ import java.time.LocalDate;
  */
 @Data
 public class Info {
-
     private Long totalBooks;
     private LocalDate dateOfLastBookAddition;
 
-    public Info(Long totalBooks, LocalDate dateOfLastBookAddition){
+    public Info(Long totalBooks, LocalDate dateOfLastBookAddition) {
         this.dateOfLastBookAddition = dateOfLastBookAddition;
         this.totalBooks = totalBooks;
     }
-
-
 }

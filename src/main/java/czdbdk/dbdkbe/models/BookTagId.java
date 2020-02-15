@@ -8,5 +8,4 @@ import java.io.Serializable;
 public class BookTagId implements Serializable {
     private Long bookId;
     private String tagSlug;
-
 }

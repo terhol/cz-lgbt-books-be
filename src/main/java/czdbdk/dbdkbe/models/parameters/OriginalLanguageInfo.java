@@ -7,13 +7,13 @@ import lombok.Data;
  * @author Tereza Holm
  */
 @Data
-public class OriginalLanguageInfo {
+class OriginalLanguageInfo {
     private Long booksMatchesValue;
     private String name;
     private String slug;
 
-    public OriginalLanguageInfo(Language language) {
-        this.name = language.getName();
-        this.slug = language.getSlug();
+    OriginalLanguageInfo(Language language) {
+        name = language.getName();
+        slug = language.getSlug();
     }
 }

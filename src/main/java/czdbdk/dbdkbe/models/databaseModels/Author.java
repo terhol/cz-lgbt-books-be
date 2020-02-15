@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * @author Tereza Holm
  */
-
 @Entity(name = "author")
 @Data
 @IdClass(AuthorCredentials.class)
@@ -26,9 +25,6 @@ public class Author implements Serializable {
     @Id
     @Column(name = "surname")
     private String lastName;
-
-
-
     @ManyToMany(mappedBy = "authors")
     @JsonBackReference
     private List<Book> books;

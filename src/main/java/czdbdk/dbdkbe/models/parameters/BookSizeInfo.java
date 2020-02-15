@@ -7,14 +7,11 @@ import lombok.Data;
  */
 @Data
 public class BookSizeInfo {
-
     private String slug;
     private String name;
     private Long booksMatchesValue;
 
-    public BookSizeInfo(String name){
+    public BookSizeInfo(String name) {
         this.name = name;
-
     }
-
 }

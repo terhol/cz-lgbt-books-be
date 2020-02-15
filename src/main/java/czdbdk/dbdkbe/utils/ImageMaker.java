@@ -13,7 +13,6 @@ import java.util.Map;
  * @author Tereza Holm
  */
 public class ImageMaker {
-
     public static String prepareImageURL(String goodreads) {
         Cloudinary cloudinary = new Cloudinary();
         String finalImageUrl = "placeholderString";

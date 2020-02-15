@@ -6,7 +6,6 @@ import com.github.slugify.Slugify;
  * @author Tereza Holm
  */
 public class SlugMaker {
-
     public static String prepareSlug(String title, String yearOfIssue) {
         Slugify slg = new Slugify();
         String result = slg.slugify(String.format("%s %s", title, yearOfIssue));

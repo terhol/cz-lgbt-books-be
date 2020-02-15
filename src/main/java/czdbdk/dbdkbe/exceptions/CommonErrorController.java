@@ -19,13 +19,12 @@ import java.util.Map;
 @Controller
 @Data
 public class CommonErrorController implements ErrorController {
-
     @Autowired
     private ErrorAttributes errorAttributes;
 
     @ResponseBody
     @RequestMapping(value = "error")
-    public ExceptionResponse error(WebRequest request, HttpServletResponse response){
+    public ExceptionResponse error(WebRequest request, HttpServletResponse response) {
         return new ExceptionResponse(response.getStatus(), getErrorAttributes(request));
     }
 
@@ -34,8 +33,7 @@ public class CommonErrorController implements ErrorController {
         return "error";
     }
 
-
-    private Map<String, Object> getErrorAttributes(WebRequest request){
+    private Map<String, Object> getErrorAttributes(WebRequest request) {
         Map<String, Object> errorMap = new HashMap<>();
         errorMap.putAll(errorAttributes.getErrorAttributes(request, false));
         return errorMap;

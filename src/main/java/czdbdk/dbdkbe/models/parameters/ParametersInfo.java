@@ -22,7 +22,6 @@ import java.util.List;
 @Data
 @Component
 public class ParametersInfo {
-
     @Autowired
     @JsonIgnore
     private BookRepository bookRepository;
@@ -56,7 +55,7 @@ public class ParametersInfo {
 
     public void prepareBookSizeList() {
         List<BookLength> finalBookSize = bookLengthRepository.findAllLengths();
-        for(BookLength bookLength:finalBookSize){
+        for (BookLength bookLength : finalBookSize) {
             bookLength.setBooksMatchesValue(bookRepository.countByNumberOfPages(bookLength.getMinPages(), bookLength.getMaxPages()));
         }
         this.bookSize = finalBookSize;

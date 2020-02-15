@@ -7,12 +7,9 @@ import lombok.Data;
  */
 @Data
 public class BookCount {
-
     private Long total;
 
-    public BookCount(Long total){
+    public BookCount(Long total) {
         this.total = total;
     }
-
-
 }

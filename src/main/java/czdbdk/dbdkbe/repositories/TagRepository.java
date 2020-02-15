@@ -10,10 +10,9 @@ import java.util.List;
  * @author Tereza Holm
  */
 public interface TagRepository extends JpaRepository<Tag, Long> {
-
-
-    @Query(value = "SELECT a.name FROM Tag a WHERE slug = ?1", nativeQuery = true)
+    @Query(value = "SELECT a.name FROM tag a WHERE slug = ?1", nativeQuery = true)
     String getNameFromSlug(String currentSlug);
 
+    @Override
     List<Tag> findAll();
 }
