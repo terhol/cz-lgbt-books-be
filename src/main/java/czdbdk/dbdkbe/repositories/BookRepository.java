@@ -26,8 +26,8 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
     @Query(value = "select * from Book ORDER BY RANDOM() limit 1", nativeQuery = true)
     Book findRandomBook();
 
-    @Query(value = "select count(b) from Book b where b.original_Language = ?1", nativeQuery = true)
-    Long countByOriginalLanguage(String originalLanguage);
+    @Query(value = "select count(b) from Book b where b.language_slug = ?1", nativeQuery = true)
+    Long countByLanguageSlug(String languageSlug);
 
     @Query(value = "select count(b) from Book b where (b.number_of_pages > ?1) and (b.number_of_pages < ?2)", nativeQuery = true)
     int countByNumberOfPages(int min, int Max);

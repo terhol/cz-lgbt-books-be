@@ -2,12 +2,13 @@ package czdbdk.dbdkbe.models.parameters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import czdbdk.dbdkbe.models.databaseModels.BookLength;
+import czdbdk.dbdkbe.models.databaseModels.Language;
 import czdbdk.dbdkbe.models.databaseModels.Tag;
 import czdbdk.dbdkbe.repositories.BookLengthRepository;
 import czdbdk.dbdkbe.repositories.BookRepository;
 import czdbdk.dbdkbe.repositories.BookTagRepository;
+import czdbdk.dbdkbe.repositories.LanguageRepository;
 import czdbdk.dbdkbe.repositories.TagRepository;
-import czdbdk.dbdkbe.utils.SlugMaker;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,18 +34,21 @@ public class ParametersInfo {
     private BookTagRepository bookTagRepository;
     @Autowired
     @JsonIgnore
+    private LanguageRepository languageRepository;
+    @Autowired
+    @JsonIgnore
     private BookLengthRepository bookLengthRepository;
     private List<TagsInfo> tags;
-    private List<OriginalLanguageInfo> originalLanguage;
+    private List<OriginalLanguageInfo>
+            originalLanguage;
     private List<BookLength> bookSize;
 
     public void prepareOriginalLanguageList() {
         List<OriginalLanguageInfo> finalListOfLanguages = new ArrayList<>();
-        List<String> allOriginalLanguages = bookRepository.findDistinctByOriginalLanguage();
-        for (String language : allOriginalLanguages) {
+        List<Language> allOriginalLanguages = languageRepository.findAll();
+        for (Language language : allOriginalLanguages) {
             OriginalLanguageInfo currentLanguage = new OriginalLanguageInfo(language);
-            currentLanguage.setSlug(SlugMaker.prepareSlug(language));
-            currentLanguage.setBooksMatchesValue(bookRepository.countByOriginalLanguage(language));
+            currentLanguage.setBooksMatchesValue(bookRepository.countByLanguageSlug(language.getSlug()));
             finalListOfLanguages.add(currentLanguage);
         }
         this.originalLanguage = finalListOfLanguages;

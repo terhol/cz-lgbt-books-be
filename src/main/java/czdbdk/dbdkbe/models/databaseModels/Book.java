@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -46,10 +47,12 @@ public class Book implements Serializable {
     @Column(name = "number_of_pages")
     @JsonView(DataView.DetailView.class)
     private int numberOfPages;
-    @Column(name = "original_language")
-    @JsonView(DataView.DetailView.class)
-    private String originalLanguage;
+    @ManyToOne
+    @JoinColumn(name = "language_slug", referencedColumnName = "slug")
+    @JsonIgnore
+    private Language language;
     @Embedded
+    @JsonView(DataView.DetailView.class)
     private Links links;
     @JsonView(DataView.SummaryView.class)
     private String imageURL;
@@ -72,4 +75,8 @@ public class Book implements Serializable {
     private List<Tag> tags;
     @JsonView(DataView.SummaryView.class)
     private String slug;
+
+    public String getOriginalLanguage() {
+        return language.getName();
+    }
 }
