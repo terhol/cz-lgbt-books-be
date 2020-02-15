@@ -118,6 +118,8 @@ public class BookController {
         parametersInfo.prepareTagsList();
         parametersInfo.prepareOriginalLanguageList();
         parametersInfo.prepareBookSizeList();
+        parametersInfo.nullPages();
+
         return parametersInfo;
     }
 

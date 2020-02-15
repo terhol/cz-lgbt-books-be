@@ -50,15 +50,14 @@ public class ParametersInfo {
             currentLanguage.setBooksMatchesValue(bookRepository.countByLanguageSlug(language.getSlug()));
             finalListOfLanguages.add(currentLanguage);
         }
-        this.originalLanguage = finalListOfLanguages;
+        originalLanguage = finalListOfLanguages;
     }
 
     public void prepareBookSizeList() {
         List<BookLength> finalBookSize = bookLengthRepository.findAllLengths();
-        for (BookLength bookLength : finalBookSize) {
+        for (BookLength bookLength : finalBookSize)
             bookLength.setBooksMatchesValue(bookRepository.countByNumberOfPages(bookLength.getMinPages(), bookLength.getMaxPages()));
-        }
-        this.bookSize = finalBookSize;
+        bookSize = finalBookSize;
     }
 
     public void prepareTagsList() {
@@ -74,6 +73,13 @@ public class ParametersInfo {
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
         }
-        this.tags = finalTags;
+        tags = finalTags;
+    }
+
+    public void nullPages() {
+        for (BookLength bookLength : bookSize) {
+            bookLength.nullMinPages();
+            bookLength.nullMaxPages();
+        }
     }
 }

@@ -17,9 +17,17 @@ public class BookLength {
     @Id
     private String slug;
     @Column(name = "min_pages")
-    private int minPages;
+    private Integer minPages;
     @Column(name = "max_pages")
-    private int maxPages;
+    private Integer maxPages;
     @Transient
-    private int booksMatchesValue;
+    private Integer booksMatchesValue;
+
+    public void nullMinPages() {
+        if (minPages == 0) minPages = null;
+    }
+
+    public void nullMaxPages() {
+        if (maxPages == 100000) maxPages = null;
+    }
 }
