@@ -14,15 +14,12 @@ GET /api/books/info
 ```
 GET /api/books/filterParams
 ```
-- __NOT IMPLEMENTED__
+- __FULLY IMPLEMENTED__
 
 ```
 GET /api/books
 ```
-- __PARTIALLY IMPLEMENTED__
-- params `order`, `orderBy`, `size` and `page` supported
-- params `tags`, `originalLanguage` and `bookSize` waiting for implementation
-- waiting for structure change, will not return just array of books anymore but object `{ total: <number>, books: Book[] }` 
+- __FULLY IMPLEMENTED__
 
 ```
 GET /api/books/:slug
@@ -157,7 +154,7 @@ __Content example__:
 
 Returns list of books by specified parameters. If no parameters specified, returns list of all books ordered by title. 
 
-__URL__: `/api/books?orderBy={orderBy}&order={order}&from={from}&to={to}&tags={tags[]}&originalLanguage={originalLanguage}&bookSize={bookSize}`
+__URL__: `/api/books?orderBy={orderBy}&order={order}&page={page}&size={size}&tags={tags[]}&originalLanguage={originalLanguage}&bookSize={bookSize}`
 
 __Method__: `GET`
 

@@ -14,4 +14,6 @@ import java.util.List;
 public interface BookLengthRepository extends PagingAndSortingRepository<BookLength, Long> {
     @Query(value = "select * from book_length", nativeQuery = true)
     List<BookLength> findAllLengths();
+
+    BookLength findBySlug(String slug);
 }
