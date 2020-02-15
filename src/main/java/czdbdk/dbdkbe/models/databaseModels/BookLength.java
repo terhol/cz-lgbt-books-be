@@ -12,7 +12,7 @@ import javax.persistence.Transient;
  */
 @Data
 @Entity(name = "book_length")
-public class BookLength {
+public class BookLength implements Comparable<BookLength> {
     private String name;
     @Id
     private String slug;
@@ -22,6 +22,24 @@ public class BookLength {
     private Integer maxPages;
     @Transient
     private Integer booksMatchesValue;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BookLength)) return false;
+        BookLength bookLength = (BookLength) o;
+        return minPages.equals(bookLength.getMinPages());
+    }
+
+    @Override
+    public int hashCode() {
+        return minPages * 31;
+    }
+
+    @Override
+    public int compareTo(BookLength bookLength) {
+        return minPages.compareTo(bookLength.getMinPages());
+    }
 
     public void nullMinPages() {
         if (minPages == 0) minPages = null;

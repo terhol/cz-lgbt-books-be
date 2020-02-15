@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,7 +51,7 @@ public class ParametersInfo {
             currentLanguage.setBooksMatchesValue(bookRepository.countByLanguageSlug(language.getSlug()));
             finalListOfLanguages.add(currentLanguage);
         }
-        finalListOfLanguages.sort(Comparator.comparing(OriginalLanguageInfo::getName));
+        Collections.sort(finalListOfLanguages);
         originalLanguage = finalListOfLanguages;
     }
 
@@ -59,7 +59,7 @@ public class ParametersInfo {
         List<BookLength> finalBookSize = bookLengthRepository.findAllLengths();
         for (BookLength bookLength : finalBookSize)
             bookLength.setBooksMatchesValue(bookRepository.countByNumberOfPages(bookLength.getMinPages(), bookLength.getMaxPages()));
-        finalBookSize.sort(Comparator.comparing(BookLength::getMinPages));
+        Collections.sort(finalBookSize);
         bookSize = finalBookSize;
     }
 
@@ -76,7 +76,7 @@ public class ParametersInfo {
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
         }
-        finalTags.sort(Comparator.comparing(TagsInfo::getName));
+        Collections.sort(finalTags);
         tags = finalTags;
     }
 
