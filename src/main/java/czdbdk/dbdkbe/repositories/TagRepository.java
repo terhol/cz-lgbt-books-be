@@ -15,4 +15,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     @Override
     List<Tag> findAll();
+
+    Tag findBySlug(String slug);
 }

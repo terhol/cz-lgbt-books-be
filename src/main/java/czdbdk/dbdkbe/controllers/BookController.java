@@ -6,9 +6,13 @@ import czdbdk.dbdkbe.jview.DataView;
 import czdbdk.dbdkbe.models.Info;
 import czdbdk.dbdkbe.models.databaseModels.Author;
 import czdbdk.dbdkbe.models.databaseModels.Book;
+import czdbdk.dbdkbe.models.databaseModels.Tag;
 import czdbdk.dbdkbe.models.parameters.ParametersInfo;
 import czdbdk.dbdkbe.repositories.AuthorRepository;
+import czdbdk.dbdkbe.repositories.BookLengthRepository;
 import czdbdk.dbdkbe.repositories.BookRepository;
+import czdbdk.dbdkbe.repositories.TagRepository;
+import czdbdk.dbdkbe.specifications.BookSpecifications;
 import czdbdk.dbdkbe.utils.ImageMaker;
 import czdbdk.dbdkbe.utils.SlugMaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +29,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
  * @author Tereza Holm
@@ -41,7 +49,11 @@ public class BookController {
     @Autowired
     private AuthorRepository authorRepository;
     @Autowired
+    private TagRepository tagRepository;
+    @Autowired
     private ParametersInfo parametersInfo;
+    @Autowired
+    private BookLengthRepository bookLengthRepository;
 
     private static Map<String, String> prepareMap() {
         Map<String, String> orderByMap = new HashMap<>();
@@ -57,13 +69,22 @@ public class BookController {
             @RequestParam(defaultValue = "dateOfAddition") String orderBy,
             @RequestParam(defaultValue = "DESC") Sort.Direction order,
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "5") Integer size
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(required = false) String originalLanguage,
+            @RequestParam(required = false) String bookSize,
+            @RequestParam(required = false) ArrayList<String> tags
     ) {
         orderBy = orderByMap.getOrDefault(orderBy, "dateOfAddition");
-
         Pageable pageable = PageRequest.of(page, size, Sort.by(order, orderBy).and(Sort.by(order, "id")));
 
-        return bookRepository.findAll(pageable).getContent();
+        List<Tag> tagEntities = new ArrayList<>();
+        if (tags != null) for (String tag : tags) tagEntities.add(tagRepository.findBySlug(tag));
+
+        return bookRepository.findAll(
+                where(Objects.requireNonNull(BookSpecifications.hasLanguageSlug(originalLanguage)
+                        .and(BookSpecifications.hasBookLength(bookLengthRepository.findBySlug(bookSize))))
+                        .and(BookSpecifications.hasTags(tagEntities))),
+                pageable).getContent();
     }
 
     @GetMapping(value = "/info", produces = "application/json")
