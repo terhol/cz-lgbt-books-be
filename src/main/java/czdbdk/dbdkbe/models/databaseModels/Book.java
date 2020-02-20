@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
 @Entity(name = "book")
 @Data
 public class Book implements Serializable {
+    private static final long serialVersionUID = -4434689087445989767L;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     @Id
@@ -75,6 +77,8 @@ public class Book implements Serializable {
     private List<Tag> tags;
     @JsonView(DataView.SummaryView.class)
     private String slug;
+    @Transient
+    private String languageSlug;
 
     public String getOriginalLanguage() {
         return language.getName();

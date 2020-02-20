@@ -12,6 +12,7 @@ import czdbdk.dbdkbe.models.parameters.ParametersInfo;
 import czdbdk.dbdkbe.repositories.AuthorRepository;
 import czdbdk.dbdkbe.repositories.BookLengthRepository;
 import czdbdk.dbdkbe.repositories.BookRepository;
+import czdbdk.dbdkbe.repositories.LanguageRepository;
 import czdbdk.dbdkbe.repositories.TagRepository;
 import czdbdk.dbdkbe.specifications.BookSpecifications;
 import czdbdk.dbdkbe.utils.ImageMaker;
@@ -56,6 +57,8 @@ public class BookController {
     private ParametersInfo parametersInfo;
     @Autowired
     private BookLengthRepository bookLengthRepository;
+    @Autowired
+    private LanguageRepository languageRepository;
 
     private static Map<String, String> prepareMap() {
         Map<String, String> orderByMap = new HashMap<>();
@@ -139,6 +142,7 @@ public class BookController {
             if (!authorRepository.existsByFirstNameAndLastName(author.getFirstName(), author.getLastName())) {
                 authorRepository.save(author);
             }
+        book.setLanguage(languageRepository.findBySlug(book.getLanguageSlug()));
         bookRepository.save(book);
 
         return book.getSlug();
