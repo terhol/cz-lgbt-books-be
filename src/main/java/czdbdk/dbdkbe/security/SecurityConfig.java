@@ -12,13 +12,18 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
  */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser(System.getenv("DKDB_USER")).password("{noop}" + System.getenv("DKDB_PASSWORD")).roles("ADMIN");
     }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .requiresChannel()
+                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure().and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/books/admin/add").hasRole("ADMIN")
