@@ -31,6 +31,11 @@ GET /api/books/random
 ```
 - __FULLY IMPLEMENTED__
 
+```
+GET /api/books/slugs
+```
+- __NOT IMPLEMENTED__
+
 ## REST API Documentation
 
 - [Common](#common)
@@ -315,6 +320,33 @@ __Code__: `200 SUCCESS`
 __Content example__:
 
 Same as [Book Details](#book-details).
+
+
+
+#### Get all slugs
+Returns all book slugs from database.
+
+__URL__: `/api/books/slugs`
+
+__Method__: `GET`
+
+##### Success Responses
+
+__Condition__: If information have been successfully returned
+
+__Code__: `200 SUCCESS`
+
+__Content example__:
+
+```json
+{
+  "slugs":[
+{"slug" : "book-slug-1"},
+{"slug" : "book-slug-2"},
+{"slug" : "book-slug-3"}
+]
+}
+```
 
 
 ## License
